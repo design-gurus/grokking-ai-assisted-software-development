@@ -1,0 +1,6 @@
+{
+  "model": "mock-review-1",
+  "content": "[\n  {\n    \"line\": 9,\n    \"severity\": \"critical\",\n    \"message\": \"A default API key literal in source is a credential in the repository; keys come from the environment and never from a constant.\"\n  }\n]",
+  "input_tokens": 295,
+  "output_tokens": 50
+}

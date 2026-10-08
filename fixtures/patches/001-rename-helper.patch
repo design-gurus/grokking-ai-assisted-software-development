@@ -1,0 +1,23 @@
+diff --git a/src/review_assistant/web/worker.py b/src/review_assistant/web/worker.py
+index 3f1c2a9..8be41d0 100644
+--- a/src/review_assistant/web/worker.py
++++ b/src/review_assistant/web/worker.py
+@@ -70,12 +70,16 @@ def post_findings(worker, job, findings):
+     pr = job.pull_request
+     posted = 0
+     for finding in findings:
++        if finding.id in worker.seen:
++            continue
++        worker.seen.add(finding.id)
+-        body = _render(finding)
++        body = _format_finding(finding)
+         worker.client.post(body)
+         posted += 1
+     return posted
+
+
+-def _render(finding):
+-    return f"{finding.severity}: {finding.message}"
++def _format_finding(finding):
++    """Render a finding as a review comment."""
++    return f"{finding.severity.upper()}: {finding.message}"

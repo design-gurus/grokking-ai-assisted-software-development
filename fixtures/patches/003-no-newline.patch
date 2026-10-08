@@ -1,0 +1,12 @@
+diff --git a/src/review_assistant/ledger/cost.py b/src/review_assistant/ledger/cost.py
+index 0a1b2c3..d4e5f6a 100644
+--- a/src/review_assistant/ledger/cost.py
++++ b/src/review_assistant/ledger/cost.py
+@@ -20,4 +20,4 @@ def review_cost_cents(input_tokens, output_tokens, input_cents_per_million, outp
+     500 cents per million is half a cent, which rounds to 1.
+     """
+     micro = input_tokens * input_cents_per_million + output_tokens * output_cents_per_million
+-    return (micro + 500_000) // 1_000_000
+\ No newline at end of file
++    return micro // 1_000_000
+\ No newline at end of file

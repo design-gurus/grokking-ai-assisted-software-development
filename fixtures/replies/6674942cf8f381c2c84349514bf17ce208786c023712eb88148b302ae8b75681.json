@@ -1,0 +1,6 @@
+{
+  "model": "mock-review-1",
+  "content": "[\n  {\n    \"line\": 17,\n    \"severity\": \"high\",\n    \"message\": \"appendleft on enqueue with popleft on dequeue makes the queue last in, first out; the docstring above still promises first in, first out.\"\n  }\n]",
+  "input_tokens": 385,
+  "output_tokens": 51
+}

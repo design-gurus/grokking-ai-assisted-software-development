@@ -5,4 +5,4 @@ and returns them with a line number in the new file. Slice one is the command
 line mode; the webhook receiver and worker arrive in slice two.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
