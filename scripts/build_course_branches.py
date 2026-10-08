@@ -14,7 +14,6 @@ It leaves you on the branch you started on.
 from __future__ import annotations
 
 import hashlib
-import re
 import subprocess
 import sys
 from pathlib import Path
@@ -55,7 +54,7 @@ def verify() -> None:
         done = subprocess.run([PY, "-m", *cmd], cwd=ROOT, capture_output=True, text=True, check=False)
         if done.returncode != 0:
             raise SystemExit(f"{cmd[0]} failed on {git('branch', '--show-current')}:\n{done.stdout[-2000:]}{done.stderr[-800:]}")
-    print(f"  verified: ruff, mypy, pytest green")
+    print("  verified: ruff, mypy, pytest green")
 
 
 def commit(message: str) -> None:
@@ -388,7 +387,6 @@ CHECK_06 = '''"""Lab 6, spot the bug: the right defects in the right places on t
 from __future__ import annotations
 
 import hashlib
-import re
 import sys
 from pathlib import Path
 
