@@ -30,10 +30,13 @@ def build_request(
 ) -> Request:
     """Build the request for one file.
 
-    Template version one is the instructions, a blank line, and the rendered file. The pull
-    request is accepted so that later template versions can use it; version one does not.
+    Template version one is the instructions, the author's context from the pull request
+    description when there is one, a blank line, and the rendered file.
     """
     if template_version != 1:
         raise ValueError(f"request template version {template_version} is not implemented")
-    text = INSTRUCTIONS + "\n\n" + render_file(file)
+    text = INSTRUCTIONS
+    if pr is not None and pr.description.strip():
+        text += "\n\nContext from the author:\n" + pr.description.strip()
+    text += "\n\n" + render_file(file)
     return Request(text=text, model=model, path=file.path)
