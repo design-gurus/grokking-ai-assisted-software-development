@@ -55,10 +55,13 @@ def review(
 
 
 @app.command()
-def ledger(config_file: Path = typer.Option(Path(".review-assistant.yml"), "--config")) -> None:
-    """Print every ledger row: when, provider, model, pull request, tokens and cents."""
+def ledger(
+    config_file: Path = typer.Option(Path(".review-assistant.yml"), "--config"),
+    limit: int | None = typer.Option(None, "--limit", help="Print only the newest N rows."),
+) -> None:
+    """Print the ledger rows: when, provider, model, pull request, tokens and cents."""
     config = load_config(config_file)
-    for row in rows(connect(config.ledger_path)):
+    for row in rows(connect(config.ledger_path), limit):
         pr = row.pull_request if row.pull_request is not None else "-"
         typer.echo(
             f"{row.created_at:%Y-%m-%d %H:%M} {row.provider}/{row.model} pr={pr} "

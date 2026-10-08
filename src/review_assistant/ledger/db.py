@@ -103,10 +103,14 @@ def row_for(engine: Engine, pull_request: int) -> Review | None:
         return row
 
 
-def rows(engine: Engine) -> list[Review]:
-    """Every ledger row, oldest first."""
+def rows(engine: Engine, limit: int | None = None) -> list[Review]:
+    """Every ledger row, oldest first; with a limit, only the newest `limit` rows."""
     with Session(engine) as session:
-        found = list(session.scalars(select(Review).order_by(Review.id)).all())
+        statement = select(Review).order_by(Review.id)
+        if limit is not None:
+            newest = select(Review.id).order_by(Review.id.desc()).limit(limit).subquery()
+            statement = statement.where(Review.id.in_(select(newest.c.id)))
+        found = list(session.scalars(statement).all())
         for row in found:
             session.expunge(row)
         return found
