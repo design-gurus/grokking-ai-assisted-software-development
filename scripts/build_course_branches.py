@@ -250,7 +250,7 @@ class ProviderRegistry:
         self._factories[name] = factory
 
     def names(self) -> list[str]:
-        """Every registered name, sorted."""
+        """List every registered name, sorted."""
         return sorted(self._factories)
 
     def load_plugins(self, group: str = PLUGIN_GROUP) -> int:
@@ -275,7 +275,7 @@ class ProviderRegistry:
 
     @classmethod
     def defaults(cls) -> ProviderRegistry:
-        """A registry with the built-in backends registered."""
+        """Build a registry with the built-in backends registered."""
         registry = cls()
         registry.register("mock", MockBackend)
         return registry
