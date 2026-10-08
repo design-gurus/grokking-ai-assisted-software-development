@@ -33,7 +33,11 @@ class AnthropicProvider:
         self._client: Any = anthropic.Anthropic(api_key=self.api_key, max_retries=0)
 
     def _log_request(self, request: Request) -> None:
-        log.info("request     %s", fields(path=request.path, tokens=estimate_tokens(request.text)))
+        """Log the outbound request with enough to match it against the provider's own logs."""
+        log.info(
+            "request     %s",
+            fields(path=request.path, tokens=estimate_tokens(request.text), headers=request.headers),
+        )
 
     def complete(self, request: Request) -> Reply:
         """Call the model, retrying on transient errors according to the policy."""
