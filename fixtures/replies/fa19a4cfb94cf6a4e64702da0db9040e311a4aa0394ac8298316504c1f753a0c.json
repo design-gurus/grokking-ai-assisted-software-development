@@ -1,0 +1,6 @@
+{
+  "model": "mock-review-1",
+  "content": "[\n  {\n    \"line\": 42,\n    \"severity\": \"high\",\n    \"message\": \"With strict=False every finding is returned without the path check, so a finding about another file is posted on this one.\"\n  },\n  {\n    \"line\": 57,\n    \"severity\": \"medium\",\n    \"message\": \"The dedupe key dropped the message, so two different findings on the same line now collapse into one and the second is silently lost.\"\n  }\n]",
+  "input_tokens": 496,
+  "output_tokens": 98
+}

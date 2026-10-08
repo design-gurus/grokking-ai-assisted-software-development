@@ -1,0 +1,6 @@
+{
+  "model": "mock-review-1",
+  "content": "[\n  {\n    \"line\": 23,\n    \"severity\": \"high\",\n    \"message\": \"Integer division truncates, so half a cent bills as zero; the docstring promises half up, which needs the 500_000 added back before dividing.\"\n  }\n]",
+  "input_tokens": 333,
+  "output_tokens": 52
+}

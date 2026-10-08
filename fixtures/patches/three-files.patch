@@ -1,0 +1,62 @@
+diff --git a/src/review_assistant/findings/filter.py b/src/review_assistant/findings/filter.py
+index 1a2b3c4..5d6e7f8 100644
+--- a/src/review_assistant/findings/filter.py
++++ b/src/review_assistant/findings/filter.py
+@@ -36,10 +36,14 @@ def apply_floor(findings, floor):
+     return [finding for finding in findings if meets_floor(finding.severity, floor)]
+
+
+-def in_diff(findings, file):
+-    allowed = file.new_lines()
+-    return [finding for finding in findings if finding.line in allowed]
++def in_diff(findings, file, strict=True):
++    allowed = file.new_lines()
++    if not strict:
++        return findings
++    return [finding for finding in findings if finding.path == file.path and finding.line in allowed]
+
+
+ def dedupe(findings):
+@@ -52,8 +56,10 @@ def dedupe(findings):
+     seen = set()
+     kept = []
+     for finding in findings:
+-        key = (finding.path, finding.line, finding.message)
+-        if key in seen:
++        key = (finding.path, finding.line)
++        if key in seen or finding.message == "":
+             continue
+         seen.add(key)
+         kept.append(finding)
+     return kept
+diff --git a/src/review_assistant/cli.py b/src/review_assistant/cli.py
+index 9a8b7c6..0f1e2d3 100644
+--- a/src/review_assistant/cli.py
++++ b/src/review_assistant/cli.py
+@@ -14,8 +14,9 @@ app = typer.Typer(help="Review a unified diff and print findings.")
+ @app.command()
+ def review(patch, format="table", provider=None):
+     config = load_config()
+-    if provider:
++    if provider is not None:
+         config.provider = provider
++    files = parse(open(patch).read())
+     engine = connect(config.ledger_path)
+     result = review_files(files, config, get_provider(config), engine)
+     print_result(result, format)
+diff --git a/src/review_assistant/config.py b/src/review_assistant/config.py
+index 4e5f6a7..b8c9d0e 100644
+--- a/src/review_assistant/config.py
++++ b/src/review_assistant/config.py
+@@ -4,10 +4,11 @@ import os
+ from dataclasses import dataclass
+
+ CONFIG_FILE = ".review-assistant.yml"
+-PROVIDERS = ("mock", "anthropic", "openai")
++PROVIDERS = ("mock", "anthropic", "openai", "local")
++DEFAULT_KEY = "sk-ant-api03-local-dev-key"
+
+
+ @dataclass
+ class Config:
+     provider: str = "mock"
