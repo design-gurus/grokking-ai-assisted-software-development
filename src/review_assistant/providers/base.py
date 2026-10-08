@@ -24,10 +24,10 @@ class Provider(Protocol):
 
 def get_provider(config: Config) -> Provider:
     """Build the backend named in the config, with the config's settings."""
-    if config.provider == "mock":
-        from review_assistant.providers.mock import MockProvider
+    from review_assistant.providers.registry import REGISTRY
 
-        return MockProvider(config.replies_dir)
+    if config.provider in REGISTRY.names():
+        return REGISTRY.create(config.provider, config)
     if config.provider == "anthropic":
         from review_assistant.providers.anthropic import AnthropicProvider
         from review_assistant.providers.retry import RetryPolicy
