@@ -387,6 +387,7 @@ CHECK_06 = '''"""Lab 6, spot the bug: the right defects in the right places on t
 from __future__ import annotations
 
 import hashlib
+import re
 import sys
 from pathlib import Path
 
