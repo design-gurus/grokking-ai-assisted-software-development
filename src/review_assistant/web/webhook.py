@@ -7,6 +7,8 @@ import hmac
 import json
 from typing import Any
 
+import pytz
+from dateutil import parser as dateparser
 from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, Request
 
 from review_assistant.models import Job, PullRequest
@@ -43,7 +45,10 @@ def job_from_event(event: dict[str, Any], delivery: str) -> Job | None:
         author=str((pull.get("user") or {}).get("login") or ""),
     )
     installation = int((event.get("installation") or {}).get("id") or 0)
-    return Job(pull_request=pr, delivery=delivery, installation=installation)
+    updated_at = None
+    if pull.get("updated_at"):
+        updated_at = dateparser.isoparse(str(pull["updated_at"])).astimezone(pytz.UTC)
+    return Job(pull_request=pr, delivery=delivery, installation=installation, updated_at=updated_at)
 
 
 def create_app(worker: Worker, secret: str, queue: JobQueue | None = None) -> FastAPI:

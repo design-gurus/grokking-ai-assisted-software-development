@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
 
 from sqlalchemy.engine import Engine
 
@@ -38,7 +39,11 @@ def run_job(worker: Worker, job: Job) -> int:
     redelivery costs no model call.
     """
     pr = job.pull_request
-    log.info("job start   %s", fields(pr=pr.number, delivery=job.delivery, installation=job.installation))
+    age = int((datetime.now(UTC) - job.updated_at).total_seconds()) if job.updated_at else None
+    log.info(
+        "job start   %s",
+        fields(pr=pr.number, delivery=job.delivery, installation=job.installation, age_seconds=age),
+    )
     cached = worker.cache.findings_for(pr.number)
     if cached is not None:
         findings = cached

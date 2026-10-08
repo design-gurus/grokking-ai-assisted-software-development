@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import datetime
 
 
 @dataclass
@@ -106,3 +107,4 @@ class Job:
     pull_request: PullRequest
     delivery: str
     installation: int = 0
+    updated_at: datetime | None = None
