@@ -375,8 +375,8 @@ def branch_e() -> tuple[str, int, int]:
     edit("src/review_assistant/context/request.py", [
         ('    text = INSTRUCTIONS + "\\n\\n" + render_file(file)\n    return Request(text=text, model=model, path=file.path)',
          '    text = INSTRUCTIONS\n    if pr is not None and pr.description.strip():\n        text += "\\n\\nContext from the author:\\n" + pr.description.strip()\n    text += "\\n\\n" + render_file(file)\n    return Request(text=text, model=model, path=file.path)'),
-        ('    request. Template version one is the instructions, a blank line, and the rendered file. The pull\n    request is accepted so that later template versions can use it; version one does not.',
-         '    request. Template version one is the instructions, the author\'s context from the pull request\n    description when there is one, and the rendered file.'),
+        ('    Template version one is the instructions, a blank line, and the rendered file. The pull\n    request is accepted so that later template versions can use it; version one does not.',
+         '    Template version one is the instructions, the author\'s context from the pull request\n    description when there is one, a blank line, and the rendered file.'),
     ])
     write("PULL_REQUEST.md", PR_E)
     return ("src/review_assistant/context/request.py", *line_range("src/review_assistant/context/request.py", "if pr is not None", 'text += "\\n\\n" + render_file(file)'))
