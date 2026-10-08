@@ -1,0 +1,22 @@
+diff --git a/src/review_assistant/web/queue.py b/src/review_assistant/web/jobs.py
+similarity index 88%
+rename from src/review_assistant/web/queue.py
+rename to src/review_assistant/web/jobs.py
+index 7c8d9e0..1f2a3b4 100644
+--- a/src/review_assistant/web/queue.py
++++ b/src/review_assistant/web/jobs.py
+@@ -1,4 +1,4 @@
+-"""A small in-process job queue between the webhook and the worker."""
++"""Jobs: the in-process queue between the webhook and the worker."""
+
+ from __future__ import annotations
+
+@@ -14,7 +14,7 @@ class JobQueue:
+
+     def enqueue(self, job):
+         """Add a job at the back."""
+-        self._jobs.append(job)
++        self._jobs.appendleft(job)
+
+     def dequeue(self):
+         """Take the job at the front, or None when the queue is empty."""

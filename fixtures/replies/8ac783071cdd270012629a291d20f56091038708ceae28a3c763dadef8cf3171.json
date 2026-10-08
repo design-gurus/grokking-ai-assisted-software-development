@@ -1,0 +1,6 @@
+{
+  "model": "mock-review-1",
+  "content": "[\n  {\n    \"line\": 18,\n    \"severity\": \"low\",\n    \"message\": \"open(patch) is never closed and reads with the platform default encoding; read the file through a context manager with encoding set.\"\n  }\n]",
+  "input_tokens": 365,
+  "output_tokens": 50
+}

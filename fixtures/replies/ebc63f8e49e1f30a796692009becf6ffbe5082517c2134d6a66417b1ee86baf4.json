@@ -1,0 +1,6 @@
+{
+  "model": "mock-review-1",
+  "content": "[\n  {\n    \"line\": 85,\n    \"severity\": \"medium\",\n    \"message\": \"Upper-casing the severity changes the text of every posted comment, which nothing in this change asked for and which downstream filters on the comment text will no longer match.\"\n  },\n  {\n    \"line\": 73,\n    \"severity\": \"low\",\n    \"message\": \"finding.id is not a field the Finding type defines elsewhere in this file; confirm it exists or key the seen set on path and line.\"\n  }\n]",
+  "input_tokens": 386,
+  "output_tokens": 111
+}

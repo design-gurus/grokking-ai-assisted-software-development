@@ -1,0 +1,112 @@
+name: labs
+
+# One check job per lab. Each job reads the lab's artifacts on the pull request branch and reports
+# the checkable criteria green or red. A job whose lab has not been started on the branch prints
+# SKIPPED and stays green. The self-honesty criteria in every lab are never checked here.
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  REVIEW_PROVIDER: mock
+  BASE_SHA: ${{ github.event.pull_request.base.sha }}
+  HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+  PR_BODY: ${{ github.event.pull_request.body }}
+
+jobs:
+  check-02:
+    name: labs/check-02 map the review assistant
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python labs/checks/check_02.py
+
+  check-03:
+    name: labs/check-03 add ignore paths
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python labs/checks/check_03.py
+
+  check-04:
+    name: labs/check-04 five bugs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python labs/checks/check_04.py
+
+  check-05:
+    name: labs/check-05 tests that can fail
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python labs/checks/check_05.py
+
+  check-06:
+    name: labs/check-06 spot the bug
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python labs/checks/check_06.py
+
+  check-07:
+    name: labs/check-07 through the gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python labs/checks/check_07.py
+
+  check-capstone:
+    name: labs/check-capstone the full loop
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python labs/checks/check_capstone.py

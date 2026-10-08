@@ -21,7 +21,7 @@ A command reviews a unified diff from a local patch file and prints findings, ea
 - The context packer stays within a token budget computed from the model limit passed in, never from a constant.
 - Findings carry a line number in the new file. The mapping from hunk offsets to new-file lines is the parser's job and the course's first graded exercise, so it must be a single function with a clear signature.
 - The cost ledger is a SQLite table written through SQLAlchemy and migrated with Alembic from the first version, so that the slice two schema change has a real migration history to extend.
-- The per-repository config file is `.review-assistant.yml` at the repository root: `ignore_paths` (globs) and `severity_floor` (`low`, `medium`, `high`, `critical`). Slice one reads it; the ignore-paths behavior is left unimplemented on purpose, because it is the Module 3 lab feature.
+- The per-repository config file is `.review-assistant.yml` at the repository root: `severity_floor` (`low`, `medium`, `high`, `critical`), the provider and model, the token budget and the ledger path. There is no `ignore_paths` setting on purpose: adding it is the Module 3 lab feature.
 - Anthropic SDK pinned below its current major. The upgrade is the Module 3 migration lesson and is recorded when it is done.
 - Every module has a docstring that says what it does today. Comments say why, never what.
 
@@ -47,10 +47,10 @@ A command reviews a unified diff from a local patch file and prints findings, ea
 |---|---|---|
 | `diff/parser.py` | parse a unified diff | `parse(text: str) -> list[FileDiff]` |
 | `diff/lines.py` | map hunk line kinds to new-file lines | `new_file_lines(new_start: int, kinds: list[str]) -> list[int]` |
-| `context/packer.py` | choose what goes in the request | `pack(files: list[FileDiff], model_limit: int, reserved_for_reply: int) -> Pack` |
+| `context/packer.py` | choose what goes in the request | `pack(files: list[FileDiff], model_limit: int, reserved_for_reply: int) -> Pack`; keeps the caller's order; the first file that does not fit ends the pack and every file after it is dropped; `FileDiff` carries `path`, `patch` and `neighbors` (the unchanged lines around each hunk); the canonical source is the module shown in course lesson 2.1 |
 | `providers/base.py` | the interface | `class Provider: def complete(self, request: Request) -> Reply` |
 | `providers/mock.py` | replay recorded replies | keyed by `sha256(request.text)` |
-| `findings/filter.py` | apply the severity floor | `filter_by_floor(findings: list[Finding], floor: str) -> list[Finding]` |
+| `findings/filter.py` | apply the severity floor | `meets_floor(severity: str, floor: str) -> bool` and `apply_floor(findings: list[Finding], floor: str) -> list[Finding]` |
 | `ledger/cost.py` | cost arithmetic | `review_cost_cents(input_tokens, output_tokens, input_cents_per_million, output_cents_per_million) -> int` |
 | `cli.py` | the command | `review-assistant review <patch> [--format table|json] [--provider mock|anthropic|openai]` |
 

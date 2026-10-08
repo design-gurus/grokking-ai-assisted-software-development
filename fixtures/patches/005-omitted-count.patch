@@ -1,0 +1,14 @@
+diff --git a/src/review_assistant/__init__.py b/src/review_assistant/__init__.py
+index 2b3c4d5..6e7f8a9 100644
+--- a/src/review_assistant/__init__.py
++++ b/src/review_assistant/__init__.py
+@@ -8 +8 @@ line mode; the webhook receiver and worker arrive in slice two.
+-__version__ = "0.1.0"
++__version__ = "0.2.0"
+diff --git a/VERSION b/VERSION
+new file mode 100644
+index 0000000..3eefcb9
+--- /dev/null
++++ b/VERSION
+@@ -0,0 +1 @@
++0.2.0
