@@ -28,7 +28,7 @@ def event(action: str = "opened") -> dict[str, object]:
         "pull_request": {
             "number": 118,
             "title": "Tidy the filter",
-            "body": "Please review.",
+            "body": "",
             "user": {"login": "someone"},
             "head": {"sha": "abc1234"},
             "base": {"sha": "def5678"},
